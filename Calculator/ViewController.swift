@@ -61,10 +61,13 @@ class ViewController: UIViewController {
         switch operation
         {
             // calling the multiply function
-            case "*": performOperation(multiply)
-            case "/": performOperation(divide)
-            case "+": performOperation(multiply)
-            case "-": performOperation(multiply)
+            case "*": performOperation({ (op1: Double, op2: Double) -> Double in
+            
+                return op1 * op2
+            })
+//            case "/": performOperation(divide)
+//            case "+": performOperation(multiply)
+//            case "-": performOperation(multiply)
             default: break
             
         }
@@ -80,15 +83,6 @@ class ViewController: UIViewController {
         }
     }
     
-    func multiply(op1: Double, op2: Double) -> Double
-    {
-        return op1 * op2
-    }
-    
-    func divide(op1: Double, op2: Double) -> Double
-    {
-        return op1 * op2
-    }
     
     // need stack for different values
     // () is an initial value of an empty array
