@@ -61,13 +61,10 @@ class ViewController: UIViewController {
         switch operation
         {
             // calling the multiply function
-            case "*": performOperation({ (op1: Double, op2: Double) -> Double in
-            
-                return op1 * op2
-            })
-//            case "/": performOperation(divide)
-//            case "+": performOperation(multiply)
-//            case "-": performOperation(multiply)
+            case "*": performOperation { $0 * $1 }
+            case "/": performOperation { $1 / $0 }
+            case "+": performOperation { $0 + $1 }
+            case "-": performOperation { $1 - $0 }
             default: break
             
         }
