@@ -38,10 +38,56 @@ class ViewController: UIViewController {
         // optional: unset (nil), and value
         // type: What type is it set to? - optional String. 
         // optional that can be a string
-        print("digit = \(digit)")
+        //print("digit = \(digit)")
         
 
         
+    }
+    
+    
+    
+    @IBAction func operate(sender: UIButton) {
+        
+        // figure out which operation was sent
+        let operation = sender.currentTitle!
+        
+        
+        if userIsInTheMiddleOfTypingNumber
+        {
+            enter()
+        }
+        
+        // switch on the string
+        switch operation
+        {
+            // calling the multiply function
+            case "*": performOperation(multiply)
+            case "/": performOperation(divide)
+            case "+": performOperation(multiply)
+            case "-": performOperation(multiply)
+            default: break
+            
+        }
+    }
+    
+    // takes a Function that takes two doubles and returns a double
+    func performOperation(operation: (Double, Double) -> Double)
+    {
+        if operandStack.count >= 2
+        {
+            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+            enter()
+        }
+    }
+    
+    func multiply(op1: Double, op2: Double) -> Double
+    {
+        return op1 * op2
+    }
+    
+    func divide(op1: Double, op2: Double) -> Double
+    {
+        return op1 * op2
     }
     
     // need stack for different values
