@@ -11,6 +11,9 @@ import UIKit
 class ViewController: UIViewController {
 
     
+    // ! vs. ?
+    // usage - implicitly unwrapped
+    
     @IBOutlet weak var display: UILabel!
     var userIsInTheMiddleOfTypingNumber: Bool = false
     
@@ -24,6 +27,8 @@ class ViewController: UIViewController {
         {
             display.text = display.text! + digit
         }
+            
+        // reset the whole disply without 0
         else
         {
             display.text = digit
@@ -39,7 +44,35 @@ class ViewController: UIViewController {
         
     }
     
+    // need stack for different values
+    // () is an initial value of an empty array
     
-
+    // putting a type can be omitted - it is inferred
+    //var operandStack: Array<Double> = Array<Double>()
+    var operandStack = Array<Double>()
+    
+    
+    @IBAction func enter() {
+        // once user hits enter, he or she is no longer entering numbers
+        userIsInTheMiddleOfTypingNumber = false
+        
+        // need to convert optional String to a Double
+        operandStack.append(displayValue)
+        print("operandStack = \(operandStack)")
+    }
+    
+    // make a computed property
+    var displayValue: Double
+    {
+        get
+        {
+           return NSNumberFormatter().numberFromString(display.text!)!.doubleValue
+        }
+        set
+        {
+            display.text = "\(newValue)"
+            userIsInTheMiddleOfTypingNumber = false
+        }
+    }
 }
 
