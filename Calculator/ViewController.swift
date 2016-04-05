@@ -65,6 +65,10 @@ class ViewController: UIViewController {
             case "/": performOperation { $1 / $0 }
             case "+": performOperation { $0 + $1 }
             case "-": performOperation { $1 - $0 }
+            
+            // need a functon that takes 1 argument
+            case "SQRT": performOperationSingle{ sqrt($0) }
+                
             default: break
             
         }
@@ -79,6 +83,17 @@ class ViewController: UIViewController {
             enter()
         }
     }
+    
+    func performOperationSingle(operation: Double -> Double)
+    {
+        // check that there's only one element on the stack
+        if operandStack.count >= 1
+        {
+            displayValue = operation(operandStack.removeLast())
+            enter()
+        }
+    }
+
     
     
     // need stack for different values
