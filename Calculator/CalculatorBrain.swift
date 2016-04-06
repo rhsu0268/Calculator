@@ -73,5 +73,72 @@ class CalculatorBrain
         }
     }
     
+    // evaluate the stack - Return a result and tuple
+    // implicit let in all things that you pass - readonly array can't be mutated
+    // if we use var, we have a mutable array. It's still a copy. 
+    //
+    private func evaluate(ops: [Op]) -> (result: Double?, remainingOps: [Op])
+    {
+        // removes last thing from array
+        // ops is immutable - you cannot change it
+        // why. when you pass arguments into functions, unless it's a class, the thing you pass is copied
+        // pass by value
+        // arrays and dictionary are not classes. They are structs. 
+        // classes vs. structs
+        // structs are passed by value. Classes are passed by reference
+        // Structs are used for basic components.
+        if !ops.isEmpty
+        {
+            
+            // we will create variable for ops - copies it
+            // mutable since it is var
+            var remainingOps = ops
+            let op = remainingOps.removeLast()
+            // get the value
+            // pull values out of enums
+        
+            switch op
+            {
+                // inside the case, operand will have the associated value
+                case .Operand(let operand):
+                    return (operand, remainingOps)
+                
+                // _ - I don't care about this
+                case .UnaryOperation(_, let operation):
+                    
+                    // get the operand
+                    let operandEvaluation = evaluate(remainingOps)
+                    
+                    // get the operand out
+                    if let operand = operandEvaluation.result
+                    {
+                        return (operation(operand), operandEvaluation.remainingOps)
+                    }
+                
+                case .BinaryOperation(_, let operation):
+                
+                    let op1Evaluation = evaluate(remainingOps)
+                    if let operand1 = op1Evaluation.result
+                    {
+                        let op2Evaluation = evaluate(op1Evaluation.remainingOps)
+                        if let operand2 = op2Evaluation.result
+                        {
+                            return (operation(operand1, operand2), op2Evaluation.remainingOps)
+                        }
+                    }
+            }
+        }
+        return (nil, ops)
+    }
+    
+    // call the function
+    func evaluation() -> Double?
+    {
+        // let a tuple equal the result
+        let (result, _) = evaluate(opStack)
+        return result
+    
+    }
+    
 
 }

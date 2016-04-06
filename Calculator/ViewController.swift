@@ -58,19 +58,22 @@ class ViewController: UIViewController {
         }
         
         // switch on the string
-        switch operation
+        if let operation = sender.currentTitle
         {
-            // calling the multiply function
-            case "*": performOperation { $0 * $1 }
-            case "/": performOperation { $1 / $0 }
-            case "+": performOperation { $0 + $1 }
-            case "-": performOperation { $1 - $0 }
-            
-            // need a functon that takes 1 argument
-            case "SQRT": performOperationSingle{ sqrt($0) }
+            switch operation
+            {
+                // calling the multiply function
+                case "*": performOperation { $0 * $1 }
+                case "/": performOperation { $1 / $0 }
+                case "+": performOperation { $0 + $1 }
+                case "-": performOperation { $1 - $0 }
                 
-            default: break
-            
+                // need a functon that takes 1 argument
+                case "SQRT": performOperationSingle{ sqrt($0) }
+                    
+                default: break
+                
+            }
         }
     }
     
@@ -110,7 +113,7 @@ class ViewController: UIViewController {
         
         // need to convert optional String to a Double
         operandStack.append(displayValue)
-        print("operandStack = \(operandStack)")
+        print("operandStack = \(operandStack)", terminator: "")
     }
     
     // make a computed property
