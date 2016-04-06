@@ -17,6 +17,9 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
     var userIsInTheMiddleOfTypingNumber: Bool = false
     
+    // need to create a calculatorBrain
+    var brain = CalculatorBrain()
+    
     
     @IBAction func appendDigit(sender: UIButton) {
         
@@ -49,7 +52,7 @@ class ViewController: UIViewController {
     @IBAction func operate(sender: UIButton) {
         
         // figure out which operation was sent
-        let operation = sender.currentTitle!
+        //let operation = sender.currentTitle!
         
         
         if userIsInTheMiddleOfTypingNumber
@@ -60,42 +63,51 @@ class ViewController: UIViewController {
         // switch on the string
         if let operation = sender.currentTitle
         {
-            switch operation
+//            switch operation
+//            {
+//                // calling the multiply function
+//                case "*": performOperation { $0 * $1 }
+//                case "/": performOperation { $1 / $0 }
+//                case "+": performOperation { $0 + $1 }
+//                case "-": performOperation { $1 - $0 }
+//                
+//                // need a functon that takes 1 argument
+//                case "SQRT": performOperationSingle{ sqrt($0) }
+//                    
+//                default: break
+//                
+//            }
+            
+            if let result = brain.performOperation(operation)
             {
-                // calling the multiply function
-                case "*": performOperation { $0 * $1 }
-                case "/": performOperation { $1 / $0 }
-                case "+": performOperation { $0 + $1 }
-                case "-": performOperation { $1 - $0 }
-                
-                // need a functon that takes 1 argument
-                case "SQRT": performOperationSingle{ sqrt($0) }
-                    
-                default: break
-                
+                displayValue = result
+            }
+            else
+            {
+                displayValue = 0
             }
         }
     }
     
     // takes a Function that takes two doubles and returns a double
-    func performOperation(operation: (Double, Double) -> Double)
-    {
-        if operandStack.count >= 2
-        {
-            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
-            enter()
-        }
-    }
-    
-    func performOperationSingle(operation: Double -> Double)
-    {
-        // check that there's only one element on the stack
-        if operandStack.count >= 1
-        {
-            displayValue = operation(operandStack.removeLast())
-            enter()
-        }
-    }
+//    func performOperation(operation: (Double, Double) -> Double)
+//    {
+//        if operandStack.count >= 2
+//        {
+//            displayValue = operation(operandStack.removeLast(), operandStack.removeLast())
+//            enter()
+//        }
+//    }
+
+//        func performOperationSingle(operation: Double -> Double)
+//        {
+//            // check that there's only one element on the stack
+//            if operandStack.count >= 1
+//            {
+//                displayValue = operation(operandStack.removeLast())
+//                enter()
+//            }
+//        }
 
     
     
@@ -104,7 +116,7 @@ class ViewController: UIViewController {
     
     // putting a type can be omitted - it is inferred
     //var operandStack: Array<Double> = Array<Double>()
-    var operandStack = Array<Double>()
+    //var operandStack = Array<Double>()
     
     
     @IBAction func enter() {
@@ -112,8 +124,26 @@ class ViewController: UIViewController {
         userIsInTheMiddleOfTypingNumber = false
         
         // need to convert optional String to a Double
-        operandStack.append(displayValue)
-        print("operandStack = \(operandStack)", terminator: "")
+        //operandStack.append(displayValue)
+        //print("operandStack = \(operandStack)", terminator: "")
+        
+        
+        // NEED TO PUSH OPERAND ONTO STACK
+        //brain.pushOperand(displayValue)
+        
+        // UPDATE DISPLAY
+        if let result = brain.pushOperand(displayValue)
+        {
+            displayValue = result
+        }
+            
+        // what if it's nil
+        // displayValue returned an optional
+        else
+        {
+            displayValue = 0
+        }
+        
     }
     
     // make a computed property

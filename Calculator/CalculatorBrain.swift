@@ -54,16 +54,9 @@ class CalculatorBrain
         knownOps["SQRT"] = Op.UnaryOperation("SQRT") { sqrt($0) }
     }
     
-    // how do we put things into Op
-    // put an operand on it and operation 
-    func pushOperand(operand: Double)
-    {
-        // create enum to put it on
-        opStack.append(Op.Operand(operand))
-    }
     
     // specify operation
-    func performOperation(symbol: String)
+    func performOperation(symbol: String) -> Double?
     {
         // look up symbol
         // type of operation: Optional - possible that it's not there - look up something in dictionary - always optinoal
@@ -71,6 +64,7 @@ class CalculatorBrain
         {
             opStack.append(operation)
         }
+        return evaluate()
     }
     
     // evaluate the stack - Return a result and tuple
@@ -132,13 +126,24 @@ class CalculatorBrain
     }
     
     // call the function
-    func evaluation() -> Double?
+    func evaluate() -> Double?
     {
         // let a tuple equal the result
         let (result, _) = evaluate(opStack)
         return result
     
     }
+    
+    // how do we put things into Op
+    // put an operand on it and operation
+    func pushOperand(operand: Double) -> Double?
+    {
+        // create enum to put it on
+        opStack.append(Op.Operand(operand))
+        
+        return evaluate()
+    }
+
     
 
 }
